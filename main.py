@@ -43,11 +43,11 @@ if __name__ == "__main__":
 
         # input data
         sentences = open(config.valid_source_dataset, 'r').readlines()
-        batches, idxs = read_all_lines(config, sentences, config.valid_batch_size)
+        batches, idxs = read_all_lines(config, sentences, 1)
         sc = init_nncontext()
         data_rdd = sc.parallelize(batches[:4]).map(lambda x: preprocess(x, beam_size)).map(lambda x: to_sample(x))
 
         # prediction
         result_rdd = tfnet.predict(data_rdd, batch_pre_core=1)
 
-        print result_rdd.collect()
+        print(result_rdd.collect())
